@@ -108,7 +108,33 @@ temp <-
   data.frame %>%
   left_join(football %>%
               dplyr::select(date, outcome, game_day))
-# 
+
+# Create a dataframe of all days, combining accidents and football
+barcelona <- 
+  # Get all dates
+  data.frame(date = seq(min(accidents@data$date),
+                        max(accidents@data$date),
+                        1)) %>%
+  # Get football outcomes
+  left_join(football %>%
+              dplyr::select(date, 
+                            game_day,
+                            location_bi,
+                            outcome,
+                            score,
+                            location),
+            by = 'date') %>%
+  mutate(game_day = ifelse(is.na(game_day), FALSE, game_day),
+         dataset = 'bcn') %>%
+  # Get accidents outcomes
+  left_join(accidents@data %>% 
+              group_by(date) %>%
+              summarise(accidents = n()),
+            by = 'date')
+
+# Keep only the essential stuff
+rm(football, temp, accidents, mapa)
+
 # # Does game day cause accidents?
 # temp_bi <-
 #   temp %>%
