@@ -4,10 +4,11 @@ source('barcelona/barcelona_code.R')
 # Read in Paris data
 source('paris/paris_code.R')
 
-# Read in london data
-# (NEED TO DO THIS STILL)
+# Read in rome data
+source('rome/rome_code.R')
 
-# # Combine all datasets
-# df <- rbind(barcelona,
-#             paris,
-#             london)
+
+# Combine all datasets
+df <- rbind(barcelona,
+            paris,
+            rome)
