@@ -6,9 +6,6 @@ source('paris/paris_code.R')
 
 # Read in rome data
 source('rome/rome_code.R')
-# drop time of day data
-rome$time <- NULL
-rome$accident_time <- NULL
 
 
 # Combine all datasets
