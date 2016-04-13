@@ -272,7 +272,14 @@ ggplot(data = temp, aes(day, y * 100, fill = outcome)) +
   geom_bar(stat = 'identity') +
   xlab('Day of Week') +
   ylab('Scaled accidents (% of average)') +
-  ggtitle('Car accidentology by Day of Week and Outcome')
+  ggtitle('All cities: Car accidentology by Day of Week and Outcome')
+
+ggplot(data = temp, aes(outcome, y * 100)) +
+  geom_bar(stat = 'identity') +
+  xlab('Day of Week') +
+  ylab('Scaled accidents (% of average)') +
+  ggtitle('All cities: Car accidentology by Day of Week and Outcome') +
+  facet_wrap(~day)
 
 ##########
 # Paris
@@ -321,8 +328,14 @@ ggplot(data = temp, aes(day, y * 100, fill = outcome)) +
   geom_bar(stat = 'identity') +
   xlab('Day of Week') +
   ylab('Scaled accidents (% of average)') +
-  ggtitle('Car accidentology by Day of Week and Outcome')
+  ggtitle('Paris: Car accidentology by Day of Week and Outcome')
 
+ggplot(data = temp, aes(outcome, y * 100)) +
+  geom_bar(stat = 'identity') +
+  xlab('Day of Week') +
+  ylab('Scaled accidents (% of average)') +
+  ggtitle('Paris: Car accidentology by Day of Week and Outcome') +
+  facet_wrap(~day)
 
 ##########
 # barcelona
@@ -371,7 +384,15 @@ ggplot(data = temp, aes(day, y * 100, fill = outcome)) +
   geom_bar(stat = 'identity') +
   xlab('Day of Week') +
   ylab('Scaled accidents (% of average)') +
-  ggtitle('Car accidentology by Day of Week and Outcome')
+  ggtitle('Barcelona: Car accidentology by Day of Week and Outcome')
+
+
+ggplot(data = temp, aes(outcome, y * 100)) +
+  geom_bar(stat = 'identity') +
+  xlab('Day of Week') +
+  ylab('Scaled accidents (% of average)') +
+  ggtitle('Barcelona: Car accidentology by Day of Week and Outcome') +
+  facet_wrap(~day)
 
 
 ##########
@@ -421,7 +442,15 @@ ggplot(data = temp, aes(day, y * 100, fill = outcome)) +
   geom_bar(stat = 'identity') +
   xlab('Day of Week') +
   ylab('Scaled accidents (% of average)') +
-  ggtitle('Car accidentology by Day of Week and Outcome')
+  ggtitle('Rome: Car accidentology by Day of Week and Outcome')
+
+
+ggplot(data = temp, aes(outcome, y * 100)) +
+  geom_bar(stat = 'identity') +
+  xlab('Day of Week') +
+  ylab('Scaled accidents (% of average)') +
+  ggtitle('Rome: Car accidentology by Day of Week and Outcome') +
+  facet_wrap(~day)
 
 ###########################################################################################
 # Models and visualization looking at home and away games seperately
