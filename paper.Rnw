@@ -1,0 +1,127 @@
+\documentclass{article}
+
+\usepackage{style}
+
+
+\begin{document}
+
+\SweaveOpts{concordance=TRUE}
+
+\vspace{20mm}
+
+
+\begin{Large}
+\begin{center}
+Research paper
+\end{center}
+\end{Large}
+
+
+\begin{Huge}
+\begin{center}
+\textbf{Association between football games and traffic accidents in 3 major European cities} 
+\end{center}
+\end{Huge}
+
+
+\vspace{5mm}
+
+\begin{changemargin}{2.5cm}{2.5cm} 
+\begin{center}
+\begin{large}
+Joe Brew \hfill \emph{joe.brew@isglobal.org} \\
+Ben Brew \hfill \emph{benmbrew@gmail.com} \\ 
+\end{large}
+\end{center}
+\end{changemargin}
+
+
+\vspace{6mm}
+
+
+
+\begin{changemargin}{3cm}{3cm} 
+
+\begin{center}
+\textbf{Summary}
+\end{center}
+
+\emph{We assess the effect of football matches (both in terms of occurrence and outcome) on the rate of traffic accidents in three major European cities (Paris, Rome, Barcelona). We find that match days are associated with a reduction in accidents, and that positive match outcomes (win) are associated with a greater reduction than negative match outcomes (tie, loss). We identify different patterns by city, and suggest pathways for future research.}
+\end{changemargin}
+\vfill  
+
+\newpage
+
+\section*{Introduction}
+
+
+Motor vehicle accidents are a major public health issue. Though mortality attributable to motor vehicle accidents is generally declining across the developed world \cite{Harper2015}, it is still a major cause of death \cite{Mokdad2004}. Furthermore, the decline makes identifying residual causal factors ever the more difficult \cite{Richter2001}, requiring creative and innovative approaches to preventing accidents through the identification of their determinants.
+
+The causes of motor vehicle accidents are multiple, ranging from the micro (human and vehicle characteristics) to the macro (physical and social environment) \cite{Waller2002}.
+
+At the macro level, much of what is already known is fairly intuitive. Laws and regulations have been shown to be an important factor \cite{Silver2013}. Infrastructure and road types are also relatively predictive of accidents \cite{LaTorre2007}. Low socioeconomic status is a risk factor \cite{Harper2015}, particularly in developing countries \cite{Nantulya2001}. Police density appears to be a protective factor against car accidents \cite{Grimm2012}. The general economic environment has been shown to influence the accident rate in multiple countries \cite{Krger2013}.
+
+Given that accidents are a low-frequency event, assessing causality at the micro level is more of a challenge. Nonetheless, certain behaviors (such as alcohol consumption \cite{LaTorre2007} and sleep deprivation \cite{Johnson2014}) and charcteristics (such as age and gender) are clear determinants \cite{Montgomery2014}. 
+
+Recent research suggests that short-term emotional states can impact the likelihood of motor vehicle accidents. And multiple studies have established an association between sports and human health and psychology. In particular, it has been shown in across places and times that the outcome of a soccer match is associated with the incidence of heart attacks \cite{Borges2013} \cite{Carroll2002}. Though evidence is mixed \cite{Leeka2010} \cite{BaroneAdesi2010} \cite{McGreevy2010} \cite{Niederseer2013}, the majority of studies suggest that the association is true.  
+
+No academic evidence regarding a possible association of sporting games occurrence and outcomes with the rate of traffic accidents. Given the potential for a convergence of risk factors (distracted driving, congestion, alcohol consumption, psychological states, etc.) with sporting events, we explore this association, asking the following two questions: (1) Is a city’s accident rate affected by the day of football matches (of the major professional team from that city)? (2) Which match-associated factors (home vs. away, win vs. loss) affect this association?
+
+
+\section*{Methodology}
+
+We gathered data from 3 major European cities: Paris, Rome and Barcelona. Each city’s major football teams’ (Paris Saint-German, A.S. Roma, and FC Barcelona) dates, locations and outcomes were compiled manually from sports websites, whereas traffic accident information came directly from open data warehouses publicly available on the internet \cite{Paris2016} \cite{Rome2016} \cite{BCN2015}. Data were constricted to years for which traffic accidents were available and reliable: 2012-2013 (Paris), 2013-2014 (Rome), and 2010-2014 (Barcelona).  All raw data, as well as the code used for the cleaning, standardization and aggregation of data, are available online \cite{Brew2016}.
+
+In order to assess the possible effect of soccer games’ occurrence on car accidents, we ran Student’s T-tests on the mean number of daily accidents (both raw and scaled to the city’s average for the period of observation) for days with and without football matches. To adjust for confounding, we regressed the number of accidents against the occurrence of games and the day of week. To account for the potential influence of outcomes (win, lose, tie) and location (home, away), we then included both factors as predictors in our model. Finally, we broke our analysis down by city, to examine potential differences.
+
+\section*{Results}
+
+\subsection*{Overall}
+
+The accident rate was significantly associated with whether or not the home team was playing that day. Across all three cities, an average of 15.4 (9.1-21.7) fewer accidents occurred on match days than on non-match days (p < 0.001).  Scaling for each city’s average accident rate showed a match-related decrease of 10.2\% (6.8\%-13.8\%).
+
+After adjustment for day of week, the effect of match day was reduced to insignificance (p = 0.46). However, this apparent null effect was the result of masking by match outcome, which indeed proved significant. Relative to non-match days, the better the outcome of the game, the greater reduction in the city-scaled accident rate. Whereas a loss was not statistically significantly different from a non match day, days where the city’s team tied saw a reduction of 9.6\% (2.4-16.9\%) in the accident; when the city’s team won, the accident saw an even greater reduction of 11.8\% (7.6-15.9\%).  
+
+\begin{center}
+\includegraphics[height=3in]{charts/1.pdf}
+\end{center}
+
+
+Relative to away games, home games saw a modest (but non-significant) reduction in the scaled accident rate (p = 0.391). The trend that positives outcomes were associated with reduced accidents held for both home and away games, though not at the level of statistical significance.
+
+
+
+\subsection*{By city}
+
+We suspected that the effect of matches and their outcomes could be different by city, since (a) Rome has the highest accident rate in Europe (suggesting that their are many other determinants), (b) Barcelona’s and Rome’s stadiums are within the city, whereas Paris Saint-Germain’s is on the periphery, (c) the size and intensity of sports fandom differs by city. 
+
+In Barcelona and Rome, the city’s team winning was indeed associated with a significant reductions in the accident rates. In Barcelona, relative to a non-match day, a win was associated with a reduction of 4 (2.4-5.1) accidents (p < 0.001), whereas ties and losses, though directionally similar to the overall trend, were not significant. In Rome,  relative to a non-match day, a win was associated with a reduction of 24 (2.2-45.6) accidents (p = 0.031), whereas ties and losses were not found to be significant.
+
+\begin{center}
+\includegraphics[height=3in]{charts/2.pdf}
+\end{center}
+
+
+Paris, however, displayed a different pattern. Though match days saw slightly fewer accidents than non-match days, wins and losses saw similar effects, but neither rose to the level of statistical significance.
+
+In regards to the question of location (home vs. away matches) by city, we observed more uniqueness than commonalities. In Rome, away games were generally protective against accidents, whereas home games (particularly losses) saw a significant increase in the accident rate. The outcomes of the match was apparently less important for away games than home games. In Paris, the pattern was mixed and generally non-conclusive. In Barcelona, home games saw fewer accidents than away games, and wins saw fewer accidents than losses (both home and away).
+
+\begin{center}
+\includegraphics[height=4.5in]{charts/3.pdf}
+\end{center}
+
+\section*{Discussion and conclusion}
+
+A city’s team winning or losing a soccer match appears to affect the number of traffic accidents in that team’s city. The extent to which this apparent effect can be attributed to structural changes (the concentration of traffic in a narrower window of time), behavioral changes (the consumption of alcohol), the reassignment of resources (more police officers devoted to crowd control than traffic control), or psychological changes (impatience, speeding, etc.) is not apparent, nor can it be deduced from the data used for this study. 
+
+To the extent that effect of matches occurrence and outcomes on accidents varied by city, further research is needed. Particularly, investigation into the timing and location of accidents (relative to the match time and location), as well as driver characteristics, could better elucidate the manners by which accidents are influenced by football. Additionally, larger scale studies over longer time periods and more locations (as well as the examination of more sports), would address some of this paper’s limitations.
+
+Nonetheless, the identification of football matches (and their outcomes) as a significant predictor of the rate of traffic accidents at the city-level is an important finding, and should noted by policy-makers, accident reduction researchers and municipal officials.
+
+
+\newpage
+
+\bibliography{library}{}
+\bibliographystyle{apalike}  
+
+\end{document}

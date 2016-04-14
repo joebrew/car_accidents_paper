@@ -37,19 +37,69 @@ df <-
   mutate(scaler = mean(accidents, na.rm = TRUE),
          days_under_observation = n()) %>%
   ungroup %>%
-  mutate(accidents_scaled = accidents / scaler) %>%
-  dplyr::select(-scaler)
+  mutate(accidents_scaled = accidents / scaler,
+         day = weekdays(date)) %>%
+  # Create weekend or not
+  mutate(weekend = ifelse(day %in% c('Saturday', 'Sunday'), TRUE, FALSE),
+         day = factor(day, levels = c('Monday',
+                                      'Tuesday',
+                                      'Wednesday',
+                                      'Thursday',
+                                      'Friday',
+                                      'Saturday',
+                                      'Sunday')))
+  
+  #%>%
+  # dplyr::select(-scaler)
 # now we have a column called accidents_scaled
 # 1 = average number of accidents (for that city)
 # <1 = below average
 # >1 = above average
+
 # we've also created a column called days_under_observation
 # which just shows how long we've observed each city 
 # (in case we want to weight each equally)
 
-# Model for number of accidents
-fit <- lm(accidents_scaled ~ outcome, 
+# T-test for simple number of accidents
+tt <- 
+  t.test(x = df$accidents[df$game_day],
+         y = df$accidents[!df$game_day])
+
+# T-test for scaled number of accidents
+tt <- 
+  t.test(x = df$accidents_scaled[df$game_day],
+         y = df$accidents_scaled[!df$game_day])
+
+# Simple model for number of accidents
+fit <- lm(accidents ~ game_day + dataset, data = df)
+fit <- lm(accidents_scaled ~ game_day, data = df)
+# Get confidenc intervals
+confint(fit)
+
+# How should we adjusted for days of week? ---
+# When accidents occur (not counting game day)
+df %>% 
+  filter(!game_day) %>% 
+  group_by(day) %>% 
+  summarise(accident_rate = sum(accidents, na.rm = T) / n())
+# When games occur 
+df %>% 
+  filter(game_day) %>% 
+  group_by(day) %>% 
+  summarise(games =n())
+fit <- lm(accidents ~ day, data = df[!df$game_day,])
+
+
+# Adjust for day of week
+fit <- lm(accidents ~ game_day + weekend + dataset, 
+          # weights = 1 / df$scaler,
           data = df)
+
+# Model for role of outcome (removing day of week since should be irrelevant)
+fit <- lm(accidents_scaled ~ outcome, 
+          weights = 1 / df$scaler,
+          data = df)
+confint(fit)
 
 # Visual
 temp <-
@@ -58,16 +108,109 @@ temp <-
   summarise(y = mean(accidents_scaled, na.rm = TRUE))
 
 # cols <- brewer.pal(4, 'Pastel2')
-cols <- 
-  colorRampPalette(c('lightblue', 'darkgreen'))(4)
+# cols <- colorRampPalette(c('lightblue', 'darkgreen'))(4)
+cols <- 'black'
 ggplot(data = temp,
        aes(x = outcome, y = y * 100)) +
   geom_bar(stat = 'identity', alpha = 0.5,
            fill = cols) +
   xlab('Game status') +
-  ylab('Scaled accidents (% of average)') +
+  ylab('Scaled accidents (% of city\'s average)') +
   geom_label(aes(label = paste0(round(y * 100, digits = 2), '%'))) +
-  ggtitle('Car accidentology by home team football game outcomes')
+  ggtitle('Traffic accident rate by football game outcome') +
+  theme(axis.text = element_text(size = 16),
+        axis.title = element_text(size = 16),
+        title = element_text(size = 20)) 
+ggsave('charts/1.pdf')
+
+# Adjust for home vs. away
+
+# home
+fit <- lm(accidents_scaled ~ outcome, 
+          weights = 1 /scaler,
+          data = df[df$location_bi == 'home',])
+confint(fit)
+
+
+# away
+fit <- lm(accidents_scaled ~ outcome, 
+          weights = 1 /scaler,
+          data = df[df$location_bi == 'away',])
+confint(fit)
+
+# Effect of home/away
+fit <- lm(accidents_scaled ~ location_bi, 
+          weights = 1 / scaler, 
+          data = df)
+
+fit <- lm(accidents_scaled ~ outcome + location_bi,
+          weights = 1 / scaler,
+          data = df)
+
+# OUTCOMES BY CITY
+
+# Paris
+fit <- lm(accidents ~ outcome, 
+          data = df[df$dataset == 'par',])
+summary(fit)
+confint(fit)
+
+# Rome
+fit <- lm(accidents ~ outcome, 
+          data = df[df$dataset == 'rome',])
+summary(fit)
+confint(fit)
+
+# Barcelona
+fit <- lm(accidents ~ outcome, 
+          data = df[df$dataset == 'bcn',])
+summary(fit)
+confint(fit)
+
+# Visual of outcomes by city
+temp <- df %>%
+  group_by(dataset = ifelse(dataset == 'par', 'Paris',
+                            ifelse(dataset == 'bcn', 'Barcelona',
+                                   ifelse(dataset == 'rome', 'Rome', NA))), 
+           outcome) %>% 
+  summarise(accident_rate = 100 * mean(accidents_scaled, na.rm = TRUE))
+ggplot(data = temp,
+       aes(x = outcome, y = accident_rate)) +
+  geom_bar(stat = 'identity', alpha = 0.6) +
+  facet_grid(~dataset) +
+  xlab('Game status') +
+  ylab('Scaled accidents (% of city\'s average)') +
+  # geom_label(aes(label = paste0(round(accident_rate, digits = 2), '%'))) +
+  ggtitle('Traffic accident rate by football game outcome and city') +
+  theme(axis.text.x = element_text(size = 12, angle = 90),
+        axis.title = element_text(size = 14),
+        title = element_text(size = 15)) +
+  geom_hline(yintercept = 100, alpha = 0.2)
+ggsave('charts/2.pdf')
+
+
+# Visual of outcomes by city and home away
+temp <- df %>%
+  filter(!is.na(location_bi)) %>% # keeping only game days
+  group_by(dataset = ifelse(dataset == 'par', 'Paris',
+                            ifelse(dataset == 'bcn', 'Barcelona',
+                                   ifelse(dataset == 'rome', 'Rome', NA))), 
+           outcome,
+           location_bi = capitalize(location_bi)) %>% 
+  summarise(accident_rate = 100 * mean(accidents_scaled, na.rm = TRUE))
+ggplot(data = temp,
+       aes(x = outcome, y = accident_rate)) +
+  geom_bar(stat = 'identity', alpha = 0.6) +
+  facet_grid(location_bi~dataset) +
+  xlab('Game status') +
+  ylab('Scaled accidents (% of city\'s average)') +
+  # geom_label(aes(label = paste0(round(accident_rate, digits = 2), '%'))) +
+  ggtitle('Traffic accident rate by football game outcome, city and location') +
+  theme(axis.text.x = element_text(size = 12, angle = 90),
+        axis.title = element_text(size = 14),
+        title = element_text(size = 15)) +
+  geom_hline(yintercept = 100, alpha = 0.2)
+ggsave('charts/3.pdf')
 
 ##################### 
 # Model for and visualization for Paris

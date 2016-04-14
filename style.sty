@@ -1,0 +1,68 @@
+%\usepackage{palatino}
+% \renewcommand{\familydefault}{\sffamily} % sans serif
+% \fontfamily{ppl}\selectfont
+
+\usepackage{longtable}
+\usepackage{xcolor}
+\usepackage{adjustbox}
+\usepackage{longtable}
+\usepackage{multicol}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{mathtools}
+\usepackage[utf8]{inputenc}
+
+%\usepackage{charter} % Use the Charter font for the document text
+\usepackage{hyperref}
+\usepackage{fancyhdr} % Headers and footers
+\pagestyle{fancy} % All pages have headers and footers
+\fancyhead{} % Blank out the default header
+\fancyfoot{} % Blank out the default footer
+\fancyhead[C]{ $\bullet$Unpublished manuscript $\bullet$} % Custom header text
+\fancyfoot[RO,LE]{\thepage} % Custom footer text
+\setlength{\headheight}{28pt}
+\usepackage{cite}
+
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+
+\usepackage{lipsum}
+
+\usepackage [english]{babel}
+\usepackage [autostyle, english = american]{csquotes}
+
+\MakeOuterQuote{"}
+
+\usepackage{changepage}
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist 
+
+\definecolor{color1}{HTML}{F05A28}
+\definecolor{color2}{HTML}{7ECCBD}
+\definecolor{color3}{HTML}{FAB011}
+\definecolor{grey}{gray}{0.9}
+\definecolor{darkgrey}{gray}{0.6}
+\definecolor{almostblack}{gray}{0.3}
+
+\newcommand\mathplus{+}
+
+
+
+
+
+
+
+% PANDOC DOESN'T LIKE THINGS THAT HAVE
+% \BEGIN OR \END, SO WE MAKE OUR OWN COMMAND
+
+\newcommand{\columnsbegin}{\begin{multicols}{2}}
+\newcommand{\columnsend}{\end{multicols}}
+
+
+\renewcommand{\rmdefault}{ppl}
+
+% Fonts: 
+
+% https://en.wikibooks.org/wiki/LaTeX/Fonts
+
+%http://tex.stackexchange.com/questions/25249/how-do-i-use-a-particular-font-for-a-small-section-of-text-in-my-document
